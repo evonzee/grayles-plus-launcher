@@ -21,7 +21,7 @@ namespace GraylesPlusTests
         [InlineData("C","D")]
         public void TestDirectoryChanges(string grayles, string sb){
             var config = new g.Config();
-            var config2 = config.With(grayles,sb);
+            var config2 = config.With(graylesRoot: grayles, starboundRoot: sb);
 
             Assert.NotSame(config, config2);
 
