@@ -1,7 +1,7 @@
 using System;
 using g = GraylesPlus;
 using Xunit;
-
+using System.IO;
 
 namespace GraylesPlusTests
 {
@@ -39,6 +39,31 @@ namespace GraylesPlusTests
                 Assert.NotEqual(config.StarboundRoot, config2.StarboundRoot);
             }
 
+        }
+
+        [Fact]
+        public void ConfigCanBeRead(){
+            var configFile = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+            File.WriteAllText(configFile, "{graylesRoot: 'bob', starboundRoot: 'joe'}");
+
+            var config = g.Config.Load();
+            Assert.Equal("bob", config.GraylesRoot);
+            Assert.Equal("joe", config.StarboundRoot);
+
+            File.Delete(configFile);
+        }
+
+        [Fact]
+        public void ConfigCanBeWritten(){
+            var config = new g.Config().With(graylesRoot: "Testing", starboundRoot: "SB Root");
+            g.Config.Save(config);
+            
+            var newConfig = g.Config.Load();
+            Assert.Equal("Testing", newConfig.GraylesRoot);
+            Assert.Equal("SB Root", newConfig.StarboundRoot);
+
+            var configFile = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+            File.Delete(configFile);
         }
 
     }
