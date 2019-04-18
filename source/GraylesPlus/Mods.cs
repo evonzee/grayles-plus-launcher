@@ -8,7 +8,8 @@ namespace GraylesPlus
         private readonly Config _config;
         private readonly string _targetVersion;
 
-        public Mods(): this(new Config(), null) {}
+
+        #region Constructors and transformers
 
         public Mods(Config config, string targetVersion = null){
             this._config = config;
@@ -19,6 +20,11 @@ namespace GraylesPlus
                 config: config ?? this._config,
                 targetVersion: targetVersion ?? this._targetVersion
             );
+
+        #endregion
+
+        
+        #region Public properties
 
         public bool Downloaded { get {
             return File.Exists(this.ModZip);
@@ -60,6 +66,10 @@ namespace GraylesPlus
             return this._config.ModRoot;
         }}
 
+        #endregion
+
+        #region Activities this class can perform
+
         public string GetLatestVersion() {
             return "4.0.0";  // eventually, get this from a service on grayles.net
         }
@@ -81,6 +91,7 @@ namespace GraylesPlus
             return this.Installed;
         }
 
+        #endregion
 
     }
 }
