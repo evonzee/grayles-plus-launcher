@@ -2,6 +2,7 @@ language: csharp
 solution: grayles-plus-launcher.sln
 mono: none
 dotnet: 2.2
+dist: xenial
 script:
  - dotnet restore
  - dotnet test source/GraylesPlusTests
