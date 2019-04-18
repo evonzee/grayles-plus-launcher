@@ -64,9 +64,41 @@ namespace GraylesPlusTests
             Assert.Equal(mods.InstalledVersion, version);
         }
 
-        // test that downloaded file presence is correctly detected
+        [Theory]
+        [InlineData("3.0.2")]
+        [InlineData("4.0.0")]
+        public void ZipFileDetected(string version){
+            // not a real zipfile, but this test doesn't care about that
+            using(var file = File.CreateText(Path.Combine(this._path,$"Grayles Modpack V{version}.zip"))){
+                file.Write(version);
+            }
 
-        // test that modpack can be unzipped correctly
+            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+            Assert.True(mods.Downloaded);
+
+            mods = mods.With(targetVersion: "something else");
+            Assert.False(mods.Downloaded);
+        }
+        
+        [Theory]
+        [InlineData("3.0.2")]
+        [InlineData("4.0.0")]
+        public void ModsCanUnzip(string version){
+            string modsToZip = Path.Combine(this._path, "zipmods");
+            Directory.CreateDirectory(modsToZip);
+            using(var file = File.CreateText(Path.Combine(modsToZip,"testfile.txt"))){
+                file.Write(version);
+            }
+            System.IO.Compression.ZipFile.CreateFromDirectory(modsToZip, Path.Combine(this._path,$"Grayles Modpack V{version}.zip"));
+            
+            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+            Assert.True(mods.Install());
+            Assert.True(mods.Installed);
+            Assert.Equal(version, mods.InstalledVersion);
+
+            Assert.Equal(version, File.ReadAllText(Path.Combine(this._config.ModRoot, "testfile.txt")));
+        }
+
 
         // test that latest version can be determined (future version)
 

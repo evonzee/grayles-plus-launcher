@@ -21,21 +21,26 @@ namespace GraylesPlus
             );
 
         public bool Downloaded { get {
-            return false;
+            return File.Exists(this.ModZip);
         }}
 
         public bool Installed { get {
             return this.InstalledVersion != null;
         }}
 
-        public string InstalledVersion { get {
-            string versionfile = Path.Combine(this._config.GraylesRoot, "version.txt");
-            if(!File.Exists(versionfile)){
-                return null;
-            }
+        public string InstalledVersion { 
+            get {
+                string versionfile = Path.Combine(this._config.GraylesRoot, "version.txt");
+                if(!File.Exists(versionfile)){
+                    return null;
+                }
 
-            return File.ReadAllText(versionfile);
-        }}
+                return File.ReadAllText(versionfile);
+            }
+            private set {
+                File.WriteAllText(Path.Combine(this._config.GraylesRoot, "version.txt"), value);
+            }
+        }
 
         public string TargetVersion { get {
             if(this._targetVersion != null){
@@ -60,6 +65,19 @@ namespace GraylesPlus
         }
 
         public bool Install(){
+            if(!this.Downloaded){
+                return false; // user needs to download first
+            }
+
+            if(Directory.Exists(this.ModPath)){
+                Directory.Delete(this.ModPath);
+            }
+            Directory.CreateDirectory(ModPath);
+
+            System.IO.Compression.ZipFile.ExtractToDirectory(this.ModZip, this.ModPath);
+
+            this.InstalledVersion = TargetVersion;
+
             return this.Installed;
         }
 
