@@ -70,7 +70,7 @@ namespace GraylesPlus
 
         #region Activities this class can perform
 
-        public string GetLatestVersion() {
+        public static string GetLatestVersion() {
             return "4.0.0";  // eventually, get this from a service on grayles.net
         }
 

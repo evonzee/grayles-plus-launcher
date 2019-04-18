@@ -328,3 +328,12 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+
+# Grayles specific stuff
+.vscode
+Grayles Modpack*
+/source/GraylesCLI/mods
+/source/GraylesCLI/storage
+/source/GraylesCLI/version.txt
+/source/GraylesCLI/config.json
