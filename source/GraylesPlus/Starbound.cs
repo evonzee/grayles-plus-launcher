@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using System.IO;
 
 namespace GraylesPlus
@@ -80,7 +81,12 @@ namespace GraylesPlus
         }
 
         public void Launch(){
-
+            Directory.SetCurrentDirectory(this.StarboundExecutableFolder);
+            var process = new Process();
+            process.StartInfo.FileName = this.StarboundExecutable;
+            process.StartInfo.Arguments = $"-bootconfig {this.StarboundProfile}";
+            process.StartInfo.Environment["LD_LIBRARY_PATH"] = "./;" + System.Environment.GetEnvironmentVariable("LD_LIBRARY_PATH"); // may be needed on Linux
+            process.Start();
         }
 
         #endregion
