@@ -43,7 +43,7 @@ namespace GraylesPlusTests
 
         [Fact]
         public void ConfigCanBeRead(){
-            var configFile = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+            var configFile = Path.Combine(g.Config.AppDirectory, "config.json");
             File.WriteAllText(configFile, "{graylesRoot: 'bob', starboundRoot: 'joe'}");
 
             var config = g.Config.Load();
@@ -62,7 +62,7 @@ namespace GraylesPlusTests
             Assert.Equal("Testing", newConfig.GraylesRoot);
             Assert.Equal("SB Root", newConfig.StarboundRoot);
 
-            var configFile = Path.Combine(Directory.GetCurrentDirectory(), "config.json");
+            var configFile = Path.Combine(g.Config.AppDirectory, "config.json");
             File.Delete(configFile);
         }
 

@@ -12,7 +12,7 @@ namespace GraylesPlus
         private readonly string _graylesRoot;
         private readonly string _starboundRoot;
 
-        public Config(): this(Directory.GetCurrentDirectory(), "") {}
+        public Config(): this(AppDirectory, "") {}
 
         public Config(string graylesRoot, string starboundRoot){
             this._graylesRoot = graylesRoot;
@@ -27,6 +27,10 @@ namespace GraylesPlus
         #endregion
 
         #region Public properties
+
+        public static string AppDirectory { get {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }}
 
         public string GraylesRoot { get {
             return this._graylesRoot;
@@ -49,10 +53,10 @@ namespace GraylesPlus
         #region Save and load from disk
 
 
-        private static string ConfigFile { get {return Path.Combine(Directory.GetCurrentDirectory(), "config.json"); } }
+        private static string ConfigFile { get {return Path.Combine(AppDirectory, "config.json"); } }
 
         public static Config Load() {
-            var spec = new { graylesRoot = Directory.GetCurrentDirectory(), starboundRoot = "" };
+            var spec = new { graylesRoot = AppDirectory, starboundRoot = "" };
             if(File.Exists(ConfigFile)) {
                 spec = JsonConvert.DeserializeAnonymousType(File.ReadAllText(ConfigFile), spec);
             }
