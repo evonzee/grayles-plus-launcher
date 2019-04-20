@@ -6,7 +6,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="GraylesGui.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="GraylesGui">
+        Title="GraylesGui"
+		Width="800" Height="450">
 	
     <Design.DataContext>
         <vm:MainWindowViewModel/>
