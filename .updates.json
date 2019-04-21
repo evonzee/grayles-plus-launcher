@@ -2,8 +2,9 @@
     "versions": [
         {
             "name": "4.0.0",
-            "url": "",
-            "hashcode": ""
+            "url": "https://download1644.mediafire.com/jruuf3j78mxg/ga11klz5jveykgh/Grayles+Modpack+V4.0.0.zip",
+            "hashcode": "1d0da21977a5733d8cb776cb78c30078bf7ce97179d80cc649bb9a5255f2da6c",
+            "latest": true
         }
     ],
     "updateUrl": "https://raw.githubusercontent.com/evonzee/grayles-plus-launcher/master/.updates.json"

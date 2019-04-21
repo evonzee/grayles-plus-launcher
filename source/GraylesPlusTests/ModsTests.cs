@@ -42,7 +42,9 @@ namespace GraylesPlusTests
         [InlineData("4.0.0")]
         public void TargetVersionSettable(string version){
             var mods = new g.Mods(config: this._config);
-            var mods2 = mods.With(targetVersion: version);
+
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods2 = mods.With(targetVersion: targetVersion);
 
             Assert.NotSame(mods2, mods);
 
@@ -74,10 +76,12 @@ namespace GraylesPlusTests
                 file.Write(version);
             }
 
-            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods = new g.Mods(config: this._config).With(targetVersion: targetVersion);
             Assert.True(mods.Downloaded);
 
-            mods = mods.With(targetVersion: "something else");
+            targetVersion = new g.ModpackVersion(version: "another version");
+            mods = mods.With(targetVersion: targetVersion);
             Assert.False(mods.Downloaded);
         }
         
@@ -91,8 +95,9 @@ namespace GraylesPlusTests
                 file.Write(version);
             }
             System.IO.Compression.ZipFile.CreateFromDirectory(modsToZip, Path.Combine(this._path,"zip",$"Grayles Modpack V{version}.zip"));
-            
-            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods = new g.Mods(config: this._config).With(targetVersion: targetVersion);
             Assert.True(mods.Install());
             Assert.True(mods.Installed);
             Assert.Equal(version, mods.InstalledVersion);

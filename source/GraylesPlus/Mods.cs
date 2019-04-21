@@ -6,18 +6,18 @@ namespace GraylesPlus
     public class Mods
     {
         private readonly Config _config;
-        private readonly string _targetVersion;
+        private readonly ModpackVersion _targetVersion;
 
 
         #region Constructors and transformers
 
-        public Mods(Config config, string targetVersion = null)
+        public Mods(Config config, ModpackVersion targetVersion = null)
         {
             this._config = config;
             this._targetVersion = targetVersion;
         }
 
-        public Mods With(Config config = null, string targetVersion = null) => new Mods(
+        public Mods With(Config config = null, ModpackVersion targetVersion = null) => new Mods(
                 config: config ?? this._config,
                 targetVersion: targetVersion ?? this._targetVersion
             );
@@ -67,7 +67,7 @@ namespace GraylesPlus
             {
                 if (this._targetVersion != null)
                 {
-                    return this._targetVersion;
+                    return this._targetVersion.VersionNumber;
                 }
                 return InstalledVersion;
             }
@@ -96,11 +96,6 @@ namespace GraylesPlus
         #endregion
 
         #region Activities this class can perform
-
-        public static string GetLatestVersion()
-        {
-            return "4.0.0";  // eventually, get this from a service on grayles.net
-        }
 
         public bool Install()
         {

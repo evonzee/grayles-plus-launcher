@@ -41,12 +41,46 @@ namespace GraylesPlus
 
         #region Activities this class can perform
 
-        public static OnlineUpdate Fetch(string url)
+        public static OnlineUpdate Fetch(Config config)
         {
-            throw new NotImplementedException();
+            using (var webClient = new System.Net.WebClient())
+            {
+                OnlineUpdate update = new OnlineUpdate(config);
+                do
+                {
+                    config = config.With(updateUrl: update.UpdateUrl); // keep following until the url stabilizes
+                    string json = webClient.DownloadString(config.UpdateUrl);
+                    update = Parse(config, json);
+
+                } while (update.UpdateUrl != config.UpdateUrl);
+                return update;
+            }
         }
 
+        public static OnlineUpdate Parse(Config config, string json)
+        {
 
+            var versionSpec = new { name = "", url = "", hashcode = "", latest = false };
+            var spec = new { updateUrl = "", versions = new[] { versionSpec } };
+            var results = Newtonsoft.Json.JsonConvert.DeserializeAnonymousType(json, spec);
+
+            List<ModpackVersion> versions = new List<ModpackVersion>();
+            foreach (var version in results.versions)
+            {
+                versions.Add(new ModpackVersion(
+                    version: version.name,
+                    hashcode: version.hashcode,
+                    url: version.url,
+                    latest: version.latest
+                    ));
+            }
+
+            return new OnlineUpdate(
+                config: config,
+                versions: versions,
+                updateUrl: results.updateUrl
+                );
+        }
 
         #endregion
 

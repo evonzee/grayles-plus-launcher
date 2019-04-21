@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using g = GraylesPlus;
 using ReactiveUI;
 using System.Reactive;
@@ -71,7 +72,11 @@ namespace GraylesGui.ViewModels
 
         void RunCheckForUpdates(){
             Console.WriteLine("Checking for updates..");
-            this.Mods = this.Mods.With(targetVersion: g.Mods.GetLatestVersion());
+            g.OnlineUpdate update = g.OnlineUpdate.Fetch(this.Config);
+            if (update.AvailableVersions.Any())
+            {
+                this.Mods = this.Mods.With(targetVersion: update.AvailableVersions.First(v=>v.Latest));
+            }
         }
 
         void RunLaunch()
@@ -92,13 +97,16 @@ namespace GraylesGui.ViewModels
         {
             Console.WriteLine("Installing..");
             // eventually, download mods here
+
+
+
             this.RaisePropertyChanged("ModsDownloaded");
             if (!Mods.Downloaded)
             {
                 Console.WriteLine("Showing dialog");
                 var model = new DownloadAdviceViewModel()
                 {
-                    Mods = this.Mods.With(targetVersion: g.Mods.GetLatestVersion())
+                    Mods = this.Mods
                 };
                 try
                 {

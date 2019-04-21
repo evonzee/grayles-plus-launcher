@@ -5,12 +5,14 @@ namespace GraylesPlus
         public readonly string VersionNumber;
         public readonly string HashCode;
         public readonly string DownloadUrl;
+        public readonly bool Latest;
 
-        public ModpackVersion(string version, string hashcode, string url)
+        public ModpackVersion(string version, string hashcode = null, string url = null, bool latest = false)
         {
             this.VersionNumber = version;
             this.HashCode = hashcode;
             this.DownloadUrl = url;
+            this.Latest = latest;
         }
     }
 }

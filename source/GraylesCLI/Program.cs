@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CommandLine;
 using GraylesPlus;
 
@@ -51,11 +52,23 @@ namespace GraylesCLI
             Config config = Config.Load();
             
             Mods mods = new Mods(config);
+            OnlineUpdate update = OnlineUpdate.Fetch(config);
+            if (!update.AvailableVersions.Any())
+            {
+                Console.Out.WriteLine("Sorry, I couldn't reach the update site to find versions.  Please try again later.");
+                return 1;
+            }
 
             if(options.Version != null) {
-                mods = mods.With(targetVersion: options.Version);
+                ModpackVersion version = update.AvailableVersions.FirstOrDefault(v => v.VersionNumber == options.Version);
+                if (version == null)
+                {
+                    Console.Out.WriteLine($"ERROR: Specified version not found.  Available versions: {string.Join(", ", update.AvailableVersions)}"); 
+                    return 1;
+                }
+                mods = mods.With(targetVersion: version);
             } else {
-                mods = mods.With(targetVersion: Mods.GetLatestVersion());
+                mods = mods.With(targetVersion: update.AvailableVersions.First(v=>v.Latest));
             }
             
             System.Console.Out.WriteLine($"Installing Grayles Plus pack {mods.TargetVersion}...");
