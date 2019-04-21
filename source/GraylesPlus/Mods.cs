@@ -11,7 +11,8 @@ namespace GraylesPlus
 
         #region Constructors and transformers
 
-        public Mods(Config config, string targetVersion = null){
+        public Mods(Config config, string targetVersion = null)
+        {
             this._config = config;
             this._targetVersion = targetVersion;
         }
@@ -23,63 +24,93 @@ namespace GraylesPlus
 
         #endregion
 
-        
+
         #region Public properties
 
-        public bool Downloaded { get {
-            return File.Exists(this.ModZip);
-        }}
+        public bool Downloaded
+        {
+            get
+            {
+                return File.Exists(this.ModZip);
+            }
+        }
 
-        public bool Installed { get {
-            return this.InstalledVersion != null;
-        }}
+        public bool Installed
+        {
+            get
+            {
+                return this.InstalledVersion != null;
+            }
+        }
 
-        public string InstalledVersion { 
-            get {
+        public string InstalledVersion
+        {
+            get
+            {
                 string versionfile = Path.Combine(this._config.GraylesRoot, "version.txt");
-                if(!File.Exists(versionfile)){
+                if (!File.Exists(versionfile))
+                {
                     return null;
                 }
 
                 return File.ReadAllText(versionfile);
             }
-            private set {
+            private set
+            {
                 File.WriteAllText(Path.Combine(this._config.GraylesRoot, "version.txt"), value);
             }
         }
 
-        public string TargetVersion { get {
-            if(this._targetVersion != null){
-                return this._targetVersion;
+        public string TargetVersion
+        {
+            get
+            {
+                if (this._targetVersion != null)
+                {
+                    return this._targetVersion;
+                }
+                return InstalledVersion;
             }
-            return InstalledVersion;
-        }}
+        }
 
-        public string ModZip { get {
-            if(this.TargetVersion == null){
-                return null;
+        public string ModZip
+        {
+            get
+            {
+                if (this.TargetVersion == null)
+                {
+                    return null;
+                }
+                return Path.Combine(this._config.GraylesRoot, "zip", $"Grayles Modpack V{this.TargetVersion}.zip");
             }
-            return Path.Combine(this._config.GraylesRoot, "zip", $"Grayles Modpack V{this.TargetVersion}.zip");
-        }}
+        }
 
-        public string ModPath { get {
-            return this._config.ModRoot;
-        }}
+        public string ModPath
+        {
+            get
+            {
+                return this._config.ModRoot;
+            }
+        }
 
         #endregion
-
+        ˆ
         #region Activities this class can perform
 
-        public static string GetLatestVersion() {
+        public static string GetLatestVersion()
+        {
             return "4.0.0";  // eventually, get this from a service on grayles.net
         }
 
-        public bool Install(){
-            if(!this.Downloaded){
+        public bool Install()
+        {
+            if (!this.Downloaded)
+            {
                 return false; // user needs to download first
             }
 
-            if(Directory.Exists(this.ModPath)){
+            if (Directory.Exists(this.ModPath))
+            {
                 Directory.Delete(this.ModPath);
             }
             Directory.CreateDirectory(ModPath);
