@@ -94,7 +94,7 @@ namespace GraylesPlus
         }
 
         #endregion
-        ˆ
+
         #region Activities this class can perform
 
         public static string GetLatestVersion()
