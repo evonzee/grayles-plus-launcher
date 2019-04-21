@@ -72,7 +72,13 @@ namespace GraylesPlus
             }
         }
 
-        public string UpdateUrl { get; internal set; }
+        public string UpdateUrl
+        {
+            get
+            {
+                return this._updateUrl;
+            }
+        }
 
 
         #endregion
