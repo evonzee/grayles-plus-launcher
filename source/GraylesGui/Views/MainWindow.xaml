@@ -19,21 +19,21 @@
 			<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40">Starbound PLUS</TextBlock>
 
 			<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center" Width="800" RowDefinitions="Auto" ColumnDefinitions="*,*,*">
-				<Button Grid.Column="0" BorderBrush="Black">Check for Updates</Button>
-				<Button Grid.Column="1" BorderBrush="Black">Install</Button>
-				<Button Grid.Column="2" BorderBrush="Gold">Launch!</Button>
+				<Button Grid.Column="0" BorderBrush="Black" Command="{Binding CheckForUpdates}">Check for Updates</Button>
+				<Button Grid.Column="1" BorderBrush="Black" Command="{Binding Install}">Install</Button>
+				<Button Grid.Column="2" BorderBrush="Gold" Command="{Binding Launch}">Launch!</Button>
 			</Grid>
 			
 			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40" HorizontalAlignment="Stretch">
 				<TextBlock Grid.Row="0" Grid.Column="0">Starbound Located</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StarboundFound}"/>
-				<Button Grid.Row="0" Grid.Column="3">Set</Button>
+				<Button Grid.Row="0" Grid.Column="3" Command="{Binding FindStarbound}">Set</Button>
 				
 				<TextBlock Grid.Row="1" Grid.Column="0">Mod installation folder set</TextBlock>
 				<TextBlock Grid.Row="1" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding GraylesSet}"/>
-				<Button Grid.Row="1" Grid.Column="3">Set</Button>
+				<Button Grid.Row="1" Grid.Column="3" Command="{Binding FindGrayles}">Set</Button>
 
 				<TextBlock Grid.Row="2" Grid.Column="0">Modpack Downloaded</TextBlock>
 				<TextBlock Grid.Row="2" Grid.Column="1">...</TextBlock>

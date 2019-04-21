@@ -1,52 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using g = GraylesPlus;
 using ReactiveUI;
 using System.Reactive;
-using System.ComponentModel;
 
 namespace GraylesGui.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
 
-        public MainWindowViewModel() {
+        public MainWindowViewModel()
+        {
             this.Config = g.Config.Load();
             this.SetupCommands();
         }
 
-
-
-        private g.Config config;
+        private g.Config _config;
         public g.Config Config { 
-            get  => this.config;
+            get  => this._config;
             private set { 
-                this.RaiseAndSetIfChanged(ref config, value);
+                this.RaiseAndSetIfChanged(ref _config, value);
                 this.Mods = new g.Mods(value);
                 this.Starbound = new g.Starbound(value);
             }
         }
 
-        private g.Mods mods;
+        private g.Mods _mods;
         public g.Mods Mods {
-            get => this.Mods;
-            private set => this.RaiseAndSetIfChanged(ref mods, value);
+            get => this._mods;
+            private set => this.RaiseAndSetIfChanged(ref _mods, value);
         }
 
-        private g.Starbound starbound;
+        private g.Starbound _starbound;
         public g.Starbound Starbound {
-            get => this.starbound;
-            private set => this.RaiseAndSetIfChanged(ref starbound, value);
+            get => this._starbound;
+            private set => this.RaiseAndSetIfChanged(ref this._starbound, value);
         }
+
 
         public string StarboundFound { get { return this.Starbound.StarboundExecutableFolder != null ? "Yes" : "No"; }}
 
-        public string GraylesSet { get { return  this.Config.GraylesRoot != null ? $"Yes" : "No"; }}
+        public string GraylesSet { get { return this.Config.GraylesRoot != null ? $"Yes" : "No"; }}
 
-        public string ModsDownloaded { get { return  this.Mods.Downloaded ? $"Yes, {Mods.TargetVersion}" : "No"; }}
+        public string ModsDownloaded { get { return this.Mods.Downloaded ? $"Yes, {Mods.TargetVersion}" : "No"; }}
 
-        public string ModsInstalled { get { return  this.Mods.Installed ? $"Yes, {Mods.InstalledVersion}" : "No"; }}
+        public string ModsInstalled { get { return this.Mods.Installed ? $"Yes, {Mods.InstalledVersion}" : "No"; }}
 
         private void SetupCommands(){
             CheckForUpdates = ReactiveCommand.Create(RunCheckForUpdates);
@@ -63,22 +60,31 @@ namespace GraylesGui.ViewModels
         public ReactiveCommand<Unit, Unit> FindGrayles { get; private set; }
 
         void RunCheckForUpdates(){
+            Console.WriteLine("Checking for updates..");
             this.Mods = this.Mods.With(targetVersion: g.Mods.GetLatestVersion());
         }
 
-        void RunLaunch(){
+        void RunLaunch()
+        {
+            Console.WriteLine("Launching..");
 
         }
         
-        void RunInstall(){
+        void RunInstall()
+        {
+            Console.WriteLine("Installing..");
 
         }
 
-        void RunFindStarbound() {
+        void RunFindStarbound()
+        {
+            Console.WriteLine("Finding Starbound..");
 
         }
 
-        void RunFindGrayles() {
+        void RunFindGrayles()
+        {
+            Console.WriteLine("Finding Grayles..");
 
         }
 
