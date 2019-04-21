@@ -24,10 +24,13 @@ namespace GraylesGui
         // container, etc.
         private static void AppMain(Application app, string[] args)
         {
+            var model = new MainWindowViewModel();
             var window = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = model,
             };
+            model.Window = window;
+            
 
             app.Run(window);
         }

@@ -2,6 +2,8 @@
 using g = GraylesPlus;
 using ReactiveUI;
 using System.Reactive;
+using Avalonia.Controls;
+using System.Runtime.InteropServices;
 
 namespace GraylesGui.ViewModels
 {
@@ -15,6 +17,9 @@ namespace GraylesGui.ViewModels
         }
 
         private g.Config _config;
+
+        public Window Window { get; set; } // yuk
+
         public g.Config Config { 
             get  => this._config;
             private set { 
@@ -88,10 +93,45 @@ namespace GraylesGui.ViewModels
             Mods.Install();
         }
 
-        void RunFindStarbound()
+        async void RunFindStarbound()
         {
             Console.WriteLine("Finding Starbound..");
 
+            var folder = this.Config.StarboundRoot;
+            if(folder == null || this.Starbound.StarboundExecutableFolder == null)
+            {
+                // default to a good folder depending on platform
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Console.WriteLine("Windows detected");
+                    folder = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Starbound";
+                } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Console.WriteLine("MacOS detected");
+                    folder = Environment.GetEnvironmentVariable("HOME") + "/Library/Application Support/Steam/steamapps/common/Starbound";
+                } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Console.WriteLine("Linux detected");
+                    folder = "~/";
+                }
+            }
+
+            var task = new OpenFolderDialog()
+            {
+                InitialDirectory = folder
+            }.ShowAsync(this.Window);
+
+            folder = await task;
+            if (task.IsCompletedSuccessfully && !task.IsCanceled)
+            {
+                Console.WriteLine("Setting folder!");
+                folder = UrlDecode(folder);
+                this.Config = this.Config.With(starboundRoot: folder);
+                g.Config.Save(this.Config);
+            } else
+            {
+                Console.WriteLine("No");
+            }
         }
 
         void RunFindGrayles()
