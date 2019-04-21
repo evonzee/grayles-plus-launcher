@@ -97,8 +97,8 @@ namespace GraylesGui.ViewModels
                 return;
             }
             Mods.Install();
-            Starbound.Configure();
             this.RaisePropertyChanged("ModsInstalled");
+            Starbound.Configure();
         }
 
         async void RunFindStarbound()
@@ -126,7 +126,8 @@ namespace GraylesGui.ViewModels
 
             var task = new OpenFolderDialog()
             {
-                InitialDirectory = folder
+                InitialDirectory = folder,
+                Title = "Select Starbound root directory (should contain assets/ and doc/)"
             }.ShowAsync(this.Window);
 
             folder = await task;

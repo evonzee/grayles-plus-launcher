@@ -12,6 +12,7 @@ namespace GraylesPlusTests
         public ModsTests() {
             this._path = Path.GetRandomFileName();
             Directory.CreateDirectory(this._path);
+            Directory.CreateDirectory(Path.Combine(this._path, "zip"));
             this._config = new g.Config().With(graylesRoot: this._path);
         }
 
@@ -46,7 +47,7 @@ namespace GraylesPlusTests
             Assert.NotSame(mods2, mods);
 
             Assert.Equal(mods2.TargetVersion, version);
-            Assert.Equal(mods2.ModZip, Path.Combine(this._path, $"Grayles Modpack V{version}.zip"));
+            Assert.Equal(mods2.ModZip, Path.Combine(this._path, "zip", $"Grayles Modpack V{version}.zip"));
             Assert.Null(mods2.InstalledVersion);
 
         }
@@ -69,7 +70,7 @@ namespace GraylesPlusTests
         [InlineData("4.0.0")]
         public void ZipFileDetected(string version){
             // not a real zipfile, but this test doesn't care about that
-            using(var file = File.CreateText(Path.Combine(this._path,$"Grayles Modpack V{version}.zip"))){
+            using(var file = File.CreateText(Path.Combine(this._path,"zip",$"Grayles Modpack V{version}.zip"))){
                 file.Write(version);
             }
 
@@ -89,7 +90,7 @@ namespace GraylesPlusTests
             using(var file = File.CreateText(Path.Combine(modsToZip,"testfile.txt"))){
                 file.Write(version);
             }
-            System.IO.Compression.ZipFile.CreateFromDirectory(modsToZip, Path.Combine(this._path,$"Grayles Modpack V{version}.zip"));
+            System.IO.Compression.ZipFile.CreateFromDirectory(modsToZip, Path.Combine(this._path,"zip",$"Grayles Modpack V{version}.zip"));
             
             var mods = new g.Mods(config: this._config).With(targetVersion: version);
             Assert.True(mods.Install());
