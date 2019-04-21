@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:GraylesGui.ViewModels;assembly=GraylesGui"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="300"
+        x:Class="GraylesGui.Views.DownloadAdvice"
+        Title="Download Instructions"
+        Width="400" Height="300">
+
+    <Design.DataContext>
+        <vm:DownloadAdviceViewModel/>
+    </Design.DataContext>
+    
+    <DockPanel>
+    
+        <Button Click="Close" DockPanel.Dock="Bottom">Close</Button>    
+        <StackPanel Orientation="Vertical">
+            <TextBlock Margin="20">This installer will eventually be able to download the modpack itself.</TextBlock>
+            <TextBlock Margin="20">But it doesn't know how to do that yet.</TextBlock>
+            <TextBlock Margin="20">Please download the modpack from grayles.net.</TextBlock>
+            <TextBlock Margin="20">And place it here:</TextBlock>
+            <TextBlock Text="{Binding Mods.ModZip}" TextWrapping="Wrap" />
+        </StackPanel>
+     </DockPanel>
+</Window>
