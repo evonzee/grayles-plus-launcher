@@ -5,19 +5,15 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{C998FC60-7879-487A-A90A-34CD805855CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraylesPlus", "source\GraylesPlus\GraylesPlus.csproj", "{BE132853-492C-44C0-9763-7B8F083F912D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraylesPlus", "source\GraylesPlus\GraylesPlus.csproj", "{BE132853-492C-44C0-9763-7B8F083F912D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraylesPlusTests", "source\GraylesPlusTests\GraylesPlusTests.csproj", "{F61491CD-9824-4338-8800-4F475B9C641D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraylesPlusTests", "source\GraylesPlusTests\GraylesPlusTests.csproj", "{F61491CD-9824-4338-8800-4F475B9C641D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraylesCLI", "source\GraylesCLI\GraylesCLI.csproj", "{E98EDE17-1558-4166-91B7-2EA7ADFD89B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraylesCLI", "source\GraylesCLI\GraylesCLI.csproj", "{E98EDE17-1558-4166-91B7-2EA7ADFD89B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraylesGui", "source\GraylesGui\GraylesGui.csproj", "{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {5A5109E6-192D-4469-A590-07E833EFC94E}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -63,10 +59,29 @@ Global
 		{E98EDE17-1558-4166-91B7-2EA7ADFD89B7}.Release|x64.Build.0 = Release|Any CPU
 		{E98EDE17-1558-4166-91B7-2EA7ADFD89B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{E98EDE17-1558-4166-91B7-2EA7ADFD89B7}.Release|x86.Build.0 = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|x64.Build.0 = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Debug|x86.Build.0 = Debug|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|x64.ActiveCfg = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|x64.Build.0 = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BE132853-492C-44C0-9763-7B8F083F912D} = {C998FC60-7879-487A-A90A-34CD805855CE}
 		{F61491CD-9824-4338-8800-4F475B9C641D} = {C998FC60-7879-487A-A90A-34CD805855CE}
 		{E98EDE17-1558-4166-91B7-2EA7ADFD89B7} = {C998FC60-7879-487A-A90A-34CD805855CE}
+		{1C73CE1D-AA94-4FFB-B3F3-75F6F9E0E75C} = {C998FC60-7879-487A-A90A-34CD805855CE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A5109E6-192D-4469-A590-07E833EFC94E}
 	EndGlobalSection
 EndGlobal

@@ -30,12 +30,27 @@ namespace GraylesPlusTests
         [Theory]
         [InlineData("linux")]
         [InlineData("win64")]
+        [InlineData("osx")]
         public void StarboundExists(string system)
         {
             this.ConfigureSystem(system);
             var starbound = new g.Starbound(config: this._config);
             Assert.NotNull(starbound);
+            Assert.NotNull(starbound.StarboundExecutable);
         }
+
+
+        [Theory]
+        [InlineData("bobaloo")]
+        [InlineData("win6443")]
+        [InlineData("chunk")]
+        public void InvalidFoldersReportNoExecutable(string system)
+        {
+            this.ConfigureSystem(system);
+            var starbound = new g.Starbound(config: this._config);
+            Assert.Null(starbound.StarboundExecutable);
+        }
+
 
         [Fact]
         public void MissingSBConfigDoesntThrow(){
@@ -49,6 +64,7 @@ namespace GraylesPlusTests
         [Theory]
         [InlineData("linux")]
         [InlineData("win64")]
+        [InlineData("osx")]
         public void UnconfiguredReportsCorrectly(string system){
             this.ConfigureSystem(system);
             var starbound = new g.Starbound(config: this._config);
@@ -58,16 +74,31 @@ namespace GraylesPlusTests
         [Theory]
         [InlineData("linux")]
         [InlineData("win64")]
+        [InlineData("osx")]
         public void ConfigurationDetectionWorks(string system){
             this.ConfigureSystem(system);
             var starbound = new g.Starbound(config: this._config);
             File.WriteAllText(Path.Combine(this._config.StarboundRoot, system, "grayles.config"), "test");
             Assert.True(starbound.Configured);
         }
-        
+
+
+        [Theory]
+        [InlineData("bobaloo")]
+        [InlineData("win6443")]
+        [InlineData("chunk")]
+        public void InvalidFoldersDontCatch(string system)
+        {
+            this.ConfigureSystem(system);
+            var starbound = new g.Starbound(config: this._config);
+            File.WriteAllText(Path.Combine(this._config.StarboundRoot, system, "grayles.config"), "test");
+            Assert.False(starbound.Configured);
+        }
+
         [Theory]
         [InlineData("linux")]
         [InlineData("win64")]
+        [InlineData("osx")]
         public void ProfileWritten(string system){
             this.ConfigureSystem(system);
             var starbound = new g.Starbound(config: this._config);

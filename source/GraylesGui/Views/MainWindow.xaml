@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:GraylesGui.ViewModels;assembly=GraylesGui"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="GraylesGui.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="GraylesGui"
+		Width="800" Height="450">
+	
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<DockPanel Name="Main" Background="SkyBlue">
+		<Image DockPanel.Dock="Top" Source="/Assets/logo_large.png" Stretch="Uniform" Width="800" />
+		<DockPanel>
+			<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40">Starbound PLUS</TextBlock>
+
+			<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center" Width="800" RowDefinitions="Auto" ColumnDefinitions="*,*,*">
+				<Button Grid.Column="0" BorderBrush="Black" Command="{Binding CheckForUpdates}">Check for Updates</Button>
+				<Button Grid.Column="1" BorderBrush="Black" Command="{Binding Install}">Install</Button>
+				<Button Grid.Column="2" BorderBrush="Gold" Command="{Binding Launch}">Launch!</Button>
+			</Grid>
+			
+			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40" HorizontalAlignment="Stretch">
+				<TextBlock Grid.Row="0" Grid.Column="0">Starbound Located</TextBlock>
+				<TextBlock Grid.Row="0" Grid.Column="1">...</TextBlock>
+				<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StarboundFound}"/>
+				<Button Grid.Row="0" Grid.Column="3" Command="{Binding FindStarbound}">Set</Button>
+				
+				<TextBlock Grid.Row="1" Grid.Column="0">Mod installation folder set</TextBlock>
+				<TextBlock Grid.Row="1" Grid.Column="1">...</TextBlock>
+				<TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding GraylesSet}"/>
+				<Button Grid.Row="1" Grid.Column="3" Command="{Binding FindGrayles}">Set</Button>
+
+				<TextBlock Grid.Row="2" Grid.Column="0">Modpack Downloaded</TextBlock>
+				<TextBlock Grid.Row="2" Grid.Column="1">...</TextBlock>
+				<TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ModsDownloaded}"/>
+				
+				<TextBlock Grid.Row="3" Grid.Column="0">Modpack Installed</TextBlock>
+				<TextBlock Grid.Row="3" Grid.Column="1">...</TextBlock>
+				<TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ModsInstalled}"/>
+			</Grid>
+
+			
+		</DockPanel>
+		
+	</DockPanel>
+	
+
+</Window>

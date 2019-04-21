@@ -59,7 +59,7 @@ namespace GraylesPlus
             if(this.TargetVersion == null){
                 return null;
             }
-            return Path.Combine(this._config.GraylesRoot, $"Grayles Modpack V{this.TargetVersion}.zip");
+            return Path.Combine(this._config.GraylesRoot, "zip", $"Grayles Modpack V{this.TargetVersion}.zip");
         }}
 
         public string ModPath { get {
