@@ -1,0 +1,10 @@
+{
+    "versions": [
+        {
+            "name": "4.0.0",
+            "url": "",
+            "hashcode": ""
+        }
+    ],
+    "updateUrl": "https://raw.githubusercontent.com/evonzee/grayles-plus-launcher/master/.updates.json"
+}
