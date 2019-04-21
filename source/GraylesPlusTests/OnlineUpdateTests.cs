@@ -48,5 +48,7 @@ namespace GraylesPlusTests
             versions.AddRange(updates.AvailableVersions);
             Assert.Equal("bob", versions[0].VersionNumber);
         }
+
+
     }
 }

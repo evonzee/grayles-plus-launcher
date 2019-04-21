@@ -7,5 +7,5 @@
             "latest": true
         }
     ],
-    "updateUrl": "https://raw.githubusercontent.com/evonzee/grayles-plus-launcher/master/.updates.json"
+    "updateUrl": "https://s3.amazonaws.com/grayles-plus-launcher/updates.json"
 }

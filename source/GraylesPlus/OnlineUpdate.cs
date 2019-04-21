@@ -48,11 +48,20 @@ namespace GraylesPlus
                 OnlineUpdate update = new OnlineUpdate(config);
                 do
                 {
+                    Console.WriteLine($"Checking for updates at {update.UpdateUrl}");
                     config = config.With(updateUrl: update.UpdateUrl); // keep following until the url stabilizes
-                    string json = webClient.DownloadString(config.UpdateUrl);
-                    update = Parse(config, json);
+                    try
+                    {
+                        string json = webClient.DownloadString(config.UpdateUrl);
+                        update = Parse(config, json);
+                    } catch (System.Net.WebException e)
+                    {
+                        Console.WriteLine($"Failed to get updates from {update.UpdateUrl}: {e}");
+                        return update;
+                    }
 
                 } while (update.UpdateUrl != config.UpdateUrl);
+                Console.WriteLine($"Found updates: {update.AvailableVersions}");
                 return update;
             }
         }

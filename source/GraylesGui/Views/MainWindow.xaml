@@ -24,7 +24,7 @@
 				<Button Grid.Column="2" BorderBrush="Gold" Command="{Binding Launch}">Launch!</Button>
 			</Grid>
 			
-			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40" HorizontalAlignment="Stretch">
+			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40,40" HorizontalAlignment="Stretch">
 				<TextBlock Grid.Row="0" Grid.Column="0">Starbound Located</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StarboundFound}"/>
@@ -42,6 +42,10 @@
 				<TextBlock Grid.Row="3" Grid.Column="0">Modpack Installed</TextBlock>
 				<TextBlock Grid.Row="3" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ModsInstalled}"/>
+                
+                <TextBlock Grid.Row="4" Grid.Column="0">Latest Modpack Available</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1">...</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding TargetVersion}"/>
 			</Grid>
 
 			

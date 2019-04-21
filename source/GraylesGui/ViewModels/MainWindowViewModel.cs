@@ -32,13 +32,17 @@ namespace GraylesGui.ViewModels
                 this.RaisePropertyChanged("GraylesFound");
                 this.RaisePropertyChanged("ModsDownloaded");
                 this.RaisePropertyChanged("ModsInstalled");
+                this.RaisePropertyChanged("TargetVersion");
             }
         }
 
         private g.Mods _mods;
         public g.Mods Mods {
             get => this._mods;
-            private set => this.RaiseAndSetIfChanged(ref _mods, value);
+            private set { 
+                this.RaiseAndSetIfChanged(ref _mods, value);
+                this.RaisePropertyChanged("TargetVersion");
+            }
         }
 
         private g.Starbound _starbound;
@@ -55,6 +59,8 @@ namespace GraylesGui.ViewModels
         public string ModsDownloaded { get { return this.Mods.Downloaded ? $"Yes, {Mods.TargetVersion}" : "No"; }}
 
         public string ModsInstalled { get { return this.Mods.Installed ? $"Yes, {Mods.InstalledVersion}" : "No"; }}
+
+        public string TargetVersion { get { return this.Mods.TargetVersion; } }
 
         private void SetupCommands(){
             CheckForUpdates = ReactiveCommand.Create(RunCheckForUpdates);
@@ -76,6 +82,11 @@ namespace GraylesGui.ViewModels
             if (update.AvailableVersions.Any())
             {
                 this.Mods = this.Mods.With(targetVersion: update.AvailableVersions.First(v=>v.Latest));
+            }
+            if(update.UpdateUrl != this.Config.UpdateUrl)
+            {
+                this.Config = this.Config.With(updateUrl: update.UpdateUrl);
+                g.Config.Save(this.Config);
             }
         }
 

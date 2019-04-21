@@ -19,7 +19,7 @@ namespace GraylesPlus
         {
             this._graylesRoot = graylesRoot ?? AppDirectory;
             this._starboundRoot = starboundRoot ?? "";
-            this._updateUrl = updateUrl ?? "https://raw.githubusercontent.com/evonzee/grayles-plus-launcher/master/.updates.json";
+            this._updateUrl = updateUrl ?? "https://s3.amazonaws.com/grayles-plus-launcher/updates.json";
         }
 
         public Config With(string graylesRoot = null, string starboundRoot = null, string updateUrl = null) => new Config(
