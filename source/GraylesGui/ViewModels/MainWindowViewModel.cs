@@ -26,6 +26,10 @@ namespace GraylesGui.ViewModels
                 this.RaiseAndSetIfChanged(ref _config, value);
                 this.Mods = new g.Mods(value);
                 this.Starbound = new g.Starbound(value);
+                this.RaisePropertyChanged("StarboundFound");
+                this.RaisePropertyChanged("GraylesFound");
+                this.RaisePropertyChanged("ModsDownloaded");
+                this.RaisePropertyChanged("ModsInstalled");
             }
         }
 
@@ -86,11 +90,15 @@ namespace GraylesGui.ViewModels
         void RunInstall()
         {
             Console.WriteLine("Installing..");
+            // eventually, download mods here
+            this.RaisePropertyChanged("ModsDownloaded");
             if (!Mods.Downloaded)
             {
                 return;
             }
             Mods.Install();
+            Starbound.Configure();
+            this.RaisePropertyChanged("ModsInstalled");
         }
 
         async void RunFindStarbound()
@@ -125,19 +133,34 @@ namespace GraylesGui.ViewModels
             if (task.IsCompletedSuccessfully && !task.IsCanceled)
             {
                 Console.WriteLine("Setting folder!");
-                folder = UrlDecode(folder);
+                folder = System.Net.WebUtility.UrlDecode(folder);
                 this.Config = this.Config.With(starboundRoot: folder);
                 g.Config.Save(this.Config);
-            } else
-            {
-                Console.WriteLine("No");
             }
         }
 
-        void RunFindGrayles()
+        async void RunFindGrayles()
         {
             Console.WriteLine("Finding Grayles..");
+            var folder = this.Config.GraylesRoot;
+            if (folder == null || this.Mods.ModPath == null)
+            {
+                folder = AppDomain.CurrentDomain.BaseDirectory;
+            }
 
+            var task = new OpenFolderDialog()
+            {
+                InitialDirectory = folder
+            }.ShowAsync(this.Window);
+
+            folder = await task;
+            if (task.IsCompletedSuccessfully && !task.IsCanceled)
+            {
+                Console.WriteLine("Setting folder!");
+                folder = System.Net.WebUtility.UrlDecode(folder);
+                this.Config = this.Config.With(graylesRoot: folder);
+                g.Config.Save(this.Config);
+            }
         }
 
 
