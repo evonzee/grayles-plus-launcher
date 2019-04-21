@@ -28,7 +28,7 @@ namespace GraylesPlus
                 return null;
             }
             foreach(var dir in Directory.EnumerateDirectories(this._config.StarboundRoot)){
-                if(dir.EndsWith("win64") || dir.EndsWith("linux")){
+                if(dir.EndsWith("win64") || dir.EndsWith("linux") || dir.EndsWith("osx")){
                     return dir;
                 }
             }
