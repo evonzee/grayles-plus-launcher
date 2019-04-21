@@ -35,12 +35,25 @@ namespace GraylesPlus
             return null;
         }}
 
-        public string StarboundExecutable { get {
-            if(this.StarboundExecutableFolder == null){
-                return null;
+        public string StarboundExecutable
+        {
+            get
+            {
+                if (this.StarboundExecutableFolder == null)
+                {
+                    return null;
+                }
+                if (this.StarboundExecutableFolder.EndsWith("osx"))
+                {
+                    return Path.Combine(this.StarboundExecutableFolder, "Starbound.app/Contents/MacOS/starbound");
+                }
+                else
+                {
+                    return Path.Combine(this.StarboundExecutableFolder, "starbound");
+
+                }
             }
-            return Path.Combine(this.StarboundExecutableFolder, "starbound");;
-        }}
+        }
 
         public string StarboundProfile { get {
             if(this.StarboundExecutableFolder == null){
@@ -81,10 +94,11 @@ namespace GraylesPlus
         }
 
         public void Launch(){
-            Directory.SetCurrentDirectory(this.StarboundExecutableFolder);
             var process = new Process();
+            process.StartInfo.WorkingDirectory = this.StarboundExecutableFolder;
             process.StartInfo.FileName = this.StarboundExecutable;
-            process.StartInfo.Arguments = $"-bootconfig {this.StarboundProfile}";
+            process.StartInfo.Arguments = $"-bootconfig \"{this.StarboundProfile}\"";
+            process.StartInfo.UseShellExecute = false;
             process.StartInfo.Environment["LD_LIBRARY_PATH"] = "./;" + System.Environment.GetEnvironmentVariable("LD_LIBRARY_PATH"); // may be needed on Linux
             process.Start();
         }
