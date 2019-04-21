@@ -62,7 +62,7 @@ namespace GraylesPlus
         private static string ConfigFile { get {return Path.Combine(AppDirectory, "config.json"); } }
 
         public static Config Load() {
-            var spec = new { graylesRoot = AppDirectory, starboundRoot = "", updateUrl = "" };
+            var spec = new { graylesRoot = (string)null, starboundRoot = (string) null, updateUrl = (string)null };
             if(File.Exists(ConfigFile)) {
                 spec = JsonConvert.DeserializeAnonymousType(File.ReadAllText(ConfigFile), spec);
             }
