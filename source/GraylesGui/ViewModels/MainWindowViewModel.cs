@@ -4,6 +4,7 @@ using ReactiveUI;
 using System.Reactive;
 using Avalonia.Controls;
 using System.Runtime.InteropServices;
+using GraylesGui.Views;
 
 namespace GraylesGui.ViewModels
 {
@@ -94,8 +95,26 @@ namespace GraylesGui.ViewModels
             this.RaisePropertyChanged("ModsDownloaded");
             if (!Mods.Downloaded)
             {
+                Console.WriteLine("Showing dialog");
+                var model = new DownloadAdviceViewModel()
+                {
+                    Mods = this.Mods.With(targetVersion: g.Mods.GetLatestVersion())
+                };
+                try
+                {
+                    var window = new DownloadAdvice
+                    {
+                        DataContext = model,
+                    };
+                    window.Show();
+                } catch(Exception e)
+                {
+                    Console.WriteLine("Error! " + e);
+                }
+                Console.WriteLine("done");
                 return;
             }
+
             Mods.Install();
             this.RaisePropertyChanged("ModsInstalled");
             Starbound.Configure();
