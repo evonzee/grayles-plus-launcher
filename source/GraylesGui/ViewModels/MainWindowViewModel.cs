@@ -67,13 +67,25 @@ namespace GraylesGui.ViewModels
         void RunLaunch()
         {
             Console.WriteLine("Launching..");
-
+            if (!Mods.Installed)
+            {
+                return;
+            }
+            if (!this.Starbound.Configured)
+            {
+                return;
+            }
+            Starbound.Launch();
         }
         
         void RunInstall()
         {
             Console.WriteLine("Installing..");
-
+            if (!Mods.Downloaded)
+            {
+                return;
+            }
+            Mods.Install();
         }
 
         void RunFindStarbound()
