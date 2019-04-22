@@ -44,23 +44,25 @@ namespace GraylesPlusTests
         [Fact]
         public void ConfigCanBeRead(){
             var configFile = Path.Combine(g.Config.AppDirectory, "config.json");
-            File.WriteAllText(configFile, "{graylesRoot: 'bob', starboundRoot: 'joe'}");
+            File.WriteAllText(configFile, "{graylesRoot: 'bob', starboundRoot: 'joe', updateUrl: 'est'}");
 
             var config = g.Config.Load();
             Assert.Equal("bob", config.GraylesRoot);
             Assert.Equal("joe", config.StarboundRoot);
+            Assert.Equal("est", config.UpdateUrl);
 
             File.Delete(configFile);
         }
 
         [Fact]
         public void ConfigCanBeWritten(){
-            var config = new g.Config().With(graylesRoot: "Testing", starboundRoot: "SB Root");
+            var config = new g.Config().With(graylesRoot: "Testing", starboundRoot: "SB Root", updateUrl: "a test site");
             g.Config.Save(config);
             
             var newConfig = g.Config.Load();
             Assert.Equal("Testing", newConfig.GraylesRoot);
             Assert.Equal("SB Root", newConfig.StarboundRoot);
+            Assert.Equal("a test site", newConfig.UpdateUrl);
 
             var configFile = Path.Combine(g.Config.AppDirectory, "config.json");
             File.Delete(configFile);

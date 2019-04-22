@@ -33,7 +33,7 @@ namespace GraylesPlusTests
             Assert.False(mods.Downloaded);
             Assert.False(mods.Installed);
             Assert.Null(mods.InstalledVersion);
-            Assert.Null(mods.TargetVersion);
+            Assert.Null(mods.TargetVersion.VersionNumber);
             Assert.Null(mods.ModZip);
         }
 
@@ -42,11 +42,13 @@ namespace GraylesPlusTests
         [InlineData("4.0.0")]
         public void TargetVersionSettable(string version){
             var mods = new g.Mods(config: this._config);
-            var mods2 = mods.With(targetVersion: version);
+
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods2 = mods.With(targetVersion: targetVersion);
 
             Assert.NotSame(mods2, mods);
 
-            Assert.Equal(mods2.TargetVersion, version);
+            Assert.Equal(mods2.TargetVersion.VersionNumber, version);
             Assert.Equal(mods2.ModZip, Path.Combine(this._path, "zip", $"Grayles Modpack V{version}.zip"));
             Assert.Null(mods2.InstalledVersion);
 
@@ -74,10 +76,12 @@ namespace GraylesPlusTests
                 file.Write(version);
             }
 
-            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods = new g.Mods(config: this._config).With(targetVersion: targetVersion);
             Assert.True(mods.Downloaded);
 
-            mods = mods.With(targetVersion: "something else");
+            targetVersion = new g.ModpackVersion(version: "another version");
+            mods = mods.With(targetVersion: targetVersion);
             Assert.False(mods.Downloaded);
         }
         
@@ -91,8 +95,9 @@ namespace GraylesPlusTests
                 file.Write(version);
             }
             System.IO.Compression.ZipFile.CreateFromDirectory(modsToZip, Path.Combine(this._path,"zip",$"Grayles Modpack V{version}.zip"));
-            
-            var mods = new g.Mods(config: this._config).With(targetVersion: version);
+
+            var targetVersion = new g.ModpackVersion(version: version);
+            var mods = new g.Mods(config: this._config).With(targetVersion: targetVersion);
             Assert.True(mods.Install());
             Assert.True(mods.Installed);
             Assert.Equal(version, mods.InstalledVersion);
