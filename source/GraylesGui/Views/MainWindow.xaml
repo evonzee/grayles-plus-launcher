@@ -17,14 +17,16 @@
 		<Image DockPanel.Dock="Top" Source="/Assets/logo_large.png" Stretch="Uniform" Width="800" />
 		<DockPanel>
 			<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40">Starbound PLUS</TextBlock>
-
+            
 			<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center" Width="800" RowDefinitions="Auto" ColumnDefinitions="*,*,*">
 				<Button Grid.Column="0" BorderBrush="Black" Command="{Binding CheckForUpdates}">Check for Updates</Button>
 				<Button Grid.Column="1" BorderBrush="Black" Command="{Binding Install}">Install</Button>
 				<Button Grid.Column="2" BorderBrush="Gold" Command="{Binding Launch}">Launch!</Button>
 			</Grid>
+            
+            <TextBlock DockPanel.Dock="Bottom" Text="{Binding Status}" Width="800"/>
 			
-			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40" HorizontalAlignment="Stretch">
+			<Grid ColumnDefinitions="*,*,*,*" RowDefinitions="40,40,40,40,40" HorizontalAlignment="Stretch">
 				<TextBlock Grid.Row="0" Grid.Column="0">Starbound Located</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StarboundFound}"/>
@@ -42,6 +44,10 @@
 				<TextBlock Grid.Row="3" Grid.Column="0">Modpack Installed</TextBlock>
 				<TextBlock Grid.Row="3" Grid.Column="1">...</TextBlock>
 				<TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding ModsInstalled}"/>
+                
+                <TextBlock Grid.Row="4" Grid.Column="0">Latest Modpack Available</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="1">...</TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding TargetVersion}"/>
 			</Grid>
 
 			
