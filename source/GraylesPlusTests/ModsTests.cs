@@ -33,7 +33,7 @@ namespace GraylesPlusTests
             Assert.False(mods.Downloaded);
             Assert.False(mods.Installed);
             Assert.Null(mods.InstalledVersion);
-            Assert.Null(mods.TargetVersion);
+            Assert.Null(mods.TargetVersion.VersionNumber);
             Assert.Null(mods.ModZip);
         }
 
@@ -48,7 +48,7 @@ namespace GraylesPlusTests
 
             Assert.NotSame(mods2, mods);
 
-            Assert.Equal(mods2.TargetVersion, version);
+            Assert.Equal(mods2.TargetVersion.VersionNumber, version);
             Assert.Equal(mods2.ModZip, Path.Combine(this._path, "zip", $"Grayles Modpack V{version}.zip"));
             Assert.Null(mods2.InstalledVersion);
 

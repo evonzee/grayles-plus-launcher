@@ -6,6 +6,8 @@ using System.Reactive;
 using Avalonia.Controls;
 using System.Runtime.InteropServices;
 using GraylesGui.Views;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace GraylesGui.ViewModels
 {
@@ -51,16 +53,28 @@ namespace GraylesGui.ViewModels
             private set => this.RaiseAndSetIfChanged(ref this._starbound, value);
         }
 
+        private string _status;
+        public string Status
+        {
+            get => this._status;
+            private set
+            {
+                Console.WriteLine(value);
+                this.RaiseAndSetIfChanged(ref this._status, value);
+            }
+        }
+
+
 
         public string StarboundFound { get { return this.Starbound.StarboundExecutableFolder != null ? "Yes" : "No"; }}
 
         public string GraylesSet { get { return this.Config.GraylesRoot != null ? $"Yes" : "No"; }}
 
-        public string ModsDownloaded { get { return this.Mods.Downloaded ? $"Yes, {Mods.TargetVersion}" : "No"; }}
+        public string ModsDownloaded { get { return this.Mods.Downloaded ? $"Yes, {Mods.TargetVersion.VersionNumber}" : "No"; }}
 
         public string ModsInstalled { get { return this.Mods.Installed ? $"Yes, {Mods.InstalledVersion}" : "No"; }}
 
-        public string TargetVersion { get { return this.Mods.TargetVersion; } }
+        public string TargetVersion { get { return this.Mods.TargetVersion.VersionNumber; } }
 
         private void SetupCommands(){
             CheckForUpdates = ReactiveCommand.Create(RunCheckForUpdates);
@@ -77,22 +91,23 @@ namespace GraylesGui.ViewModels
         public ReactiveCommand<Unit, Unit> FindGrayles { get; private set; }
 
         void RunCheckForUpdates(){
-            Console.WriteLine("Checking for updates..");
+            Status = "Checking for updates..";
             g.OnlineUpdate update = g.OnlineUpdate.Fetch(this.Config);
-            if (update.AvailableVersions.Any())
-            {
-                this.Mods = this.Mods.With(targetVersion: update.AvailableVersions.First(v=>v.Latest));
-            }
             if(update.UpdateUrl != this.Config.UpdateUrl)
             {
                 this.Config = this.Config.With(updateUrl: update.UpdateUrl);
                 g.Config.Save(this.Config);
             }
+            if (update.AvailableVersions.Any())
+            {
+                this.Mods = this.Mods.With(targetVersion: update.AvailableVersions.First(v => v.Latest));
+                Status = $"Latest available version is {this.Mods.TargetVersion.VersionNumber}";
+            }
         }
 
         void RunLaunch()
         {
-            Console.WriteLine("Launching..");
+            Status = "Launching..";
             if (!Mods.Installed)
             {
                 return;
@@ -103,40 +118,72 @@ namespace GraylesGui.ViewModels
             }
             Starbound.Launch();
         }
-        
-        void RunInstall()
+
+        async void RunInstall()
         {
-            Console.WriteLine("Installing..");
-            // eventually, download mods here
+            Status = "Installing..";
 
+            if (!Mods.Downloaded)
+            {
+                Directory.CreateDirectory(this.Mods.ModZipPath);
+                using (var webClient = new System.Net.WebClient())
+                {
+                    webClient.DownloadProgressChanged += (sender, e) => { this.Status = $"Downloaded {e.ProgressPercentage}% ({e.BytesReceived}/{e.TotalBytesToReceive})"; };
 
+                    this.Status = "Starting download...";
+                    var dl = webClient.DownloadFileTaskAsync(new Uri(this.Mods.TargetVersion.DownloadUrl), this.Mods.ModZip);
+                    try
+                    {
+                        await dl;
+                        this.Status = "Finished downloading.";
+                        if (!dl.IsCompletedSuccessfully)
+                        {
+                            Status = "The download failed.";
+                            return;
+                        }
+                    }
+                    catch (System.Net.WebException)
+                    {
+                        this.Status = "Error while downloading.  Please try manually placing the file in the zip directory.";
+                        return;
+                    }
+                }
+            }
 
             this.RaisePropertyChanged("ModsDownloaded");
             if (!Mods.Downloaded)
             {
-                Console.WriteLine("Showing dialog");
-                var model = new DownloadAdviceViewModel()
-                {
-                    Mods = this.Mods
-                };
-                try
-                {
-                    var window = new DownloadAdvice
-                    {
-                        DataContext = model,
-                    };
-                    window.Show();
-                } catch(Exception e)
-                {
-                    Console.WriteLine("Error! " + e);
-                }
-                Console.WriteLine("done");
+                Status = "Something went wrong while downloading.  Please check the file in the Grayles zip directory";
                 return;
             }
 
+            // check checksum
+            if (this.Mods.TargetVersion.HashCode != null)
+            {
+                Status = "Checking Checksum...";
+                using (FileStream fs = File.OpenRead(this.Mods.ModZip))
+                using (HashAlgorithm alg = SHA256.Create())
+                {
+                    byte[] hash = alg.ComputeHash(fs);
+                    string hashString = BitConverter.ToString(hash).Replace("-", "").ToLower();
+                    if (hashString != this.Mods.TargetVersion.HashCode)
+                    {
+                        string newname = Path.GetRandomFileName();
+                        File.Move(this.Mods.ModZip, $"{this.Mods.ModZip}.{newname}.zip");
+                        Status = $"The download was corrupted.  We have renamed it to include {newname} for diagnostics.";
+                        this.RaisePropertyChanged("ModsDownloaded");
+                    }
+                }
+            }
+
+            Status = "Installing...";
             Mods.Install();
             this.RaisePropertyChanged("ModsInstalled");
+
+            Status = "Configuring Starbound...";
             Starbound.Configure();
+
+            Status = "Install process complete.";
         }
 
         async void RunFindStarbound()

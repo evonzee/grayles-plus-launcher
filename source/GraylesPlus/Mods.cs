@@ -61,19 +61,19 @@ namespace GraylesPlus
             }
         }
 
-        public string TargetVersion
+        public ModpackVersion TargetVersion
         {
             get
             {
                 if (this._targetVersion != null)
                 {
-                    return this._targetVersion.VersionNumber;
+                    return this._targetVersion;
                 }
-                return InstalledVersion;
+                return new ModpackVersion(InstalledVersion);
             }
         }
 
-        public string ModZip
+        public string ModZipPath
         {
             get
             {
@@ -81,7 +81,19 @@ namespace GraylesPlus
                 {
                     return null;
                 }
-                return Path.Combine(this._config.GraylesRoot, "zip", $"Grayles Modpack V{this.TargetVersion}.zip");
+                return Path.Combine(this._config.GraylesRoot, "zip");
+            }
+        }
+
+        public string ModZip
+        {
+            get
+            {
+                if (this.TargetVersion == null || this.TargetVersion.VersionNumber == null)
+                {
+                    return null;
+                }
+                return Path.Combine(this.ModZipPath, $"Grayles Modpack V{this.TargetVersion.VersionNumber}.zip");
             }
         }
 
@@ -106,13 +118,13 @@ namespace GraylesPlus
 
             if (Directory.Exists(this.ModPath))
             {
-                Directory.Delete(this.ModPath);
+                Directory.Delete(this.ModPath, true);
             }
             Directory.CreateDirectory(ModPath);
 
             System.IO.Compression.ZipFile.ExtractToDirectory(this.ModZip, this.ModPath);
 
-            this.InstalledVersion = TargetVersion;
+            this.InstalledVersion = TargetVersion.VersionNumber;
 
             return this.Installed;
         }
