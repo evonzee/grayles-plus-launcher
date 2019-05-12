@@ -3,7 +3,12 @@
         {
             "name": "4.0.0",
             "url": "https://download1644.mediafire.com/jruuf3j78mxg/ga11klz5jveykgh/Grayles+Modpack+V4.0.0.zip",
-            "hashcode": "1d0da21977a5733d8cb776cb78c30078bf7ce97179d80cc649bb9a5255f2da6c",
+            "hashcode": "1d0da21977a5733d8cb776cb78c30078bf7ce97179d80cc649bb9a5255f2da6c"
+        },
+        {
+            "name": "4.0.1",
+            "url": "https://download1350.mediafire.com/l4xc8e0gdwpg/td0cfl0ix1eidea/Grayles+Modpack+4.0.1.zip",
+            "hashcode": "9cfa4588fd9d578cb5aef1b57e72e0a42bac18080828fcce9920d4ee08881c08",
             "latest": true
         }
     ],
